@@ -1,0 +1,16 @@
+elem1,elem2,gas1,gas2,ads1,ads2,bo_gas,bo_ads,delta_bo,length_gas,length_ads,kind,label
+H,Mo,0,5,2,5,0.8523,0.5357,-0.3166,1.7083239729776074,1.765030741689787,intramolecular,Activated
+H,Mo,1,5,1,5,0.8272,0.5627,-0.26450000000000007,1.7210254554189497,1.7650388476149754,intramolecular,Activated
+H,Mo,2,5,0,5,0.8258,0.5613,-0.26449999999999996,1.7208964026997673,1.7677481375880446,intramolecular,Activated
+H,O,3,4,3,4,0.8738,0.7738,-0.09999999999999998,0.975358861573524,0.9773604515740341,intramolecular,Activated
+O,Mo,4,5,4,5,1.0086,1.1028,0.09420000000000006,1.904247521128753,1.8819406493633108,intramolecular,Strengthened
+H,H,-1,-1,0,2,,0.0586,,,1.9371129387395045,intramolecular,New
+H,Cu,-1,-1,0,15,,0.4307,,,1.7349554141346109,adsorbate-surface,New
+H,H,-1,-1,1,2,,0.0605,,,1.927411761213986,intramolecular,New
+H,Cu,-1,-1,1,12,,0.4197,,,1.7412020170184157,adsorbate-surface,New
+H,Cu,-1,-1,2,16,,0.3423,,,1.7960508037093492,adsorbate-surface,New
+Mo,Cu,-1,-1,5,7,,0.0559,,,3.4902438297033065,adsorbate-surface,New
+Mo,Cu,-1,-1,5,11,,0.7927,,,2.2785416357446704,adsorbate-surface,New
+Mo,Cu,-1,-1,5,12,,0.2205,,,2.744250298439448,adsorbate-surface,New
+Mo,Cu,-1,-1,5,15,,0.1694,,,2.8427593539919975,adsorbate-surface,New
+Mo,Cu,-1,-1,5,16,,0.2844,,,2.5902339736612596,adsorbate-surface,New

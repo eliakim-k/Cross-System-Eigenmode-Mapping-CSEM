@@ -1,0 +1,15 @@
+elem1,elem2,gas1,gas2,ads1,ads2,bo_gas,bo_ads,delta_bo,length_gas,length_ads,kind,label
+H,Mo,0,5,0,5,0.8523,0.4184,-0.43389999999999995,1.7083239729776074,1.8250927913426758,intramolecular,Activated
+H,Mo,1,5,1,5,0.8272,0.4625,-0.3647,1.7210254554189497,1.8271173177565803,intramolecular,Activated
+H,Mo,2,5,2,5,0.8258,0.462,-0.36379999999999996,1.7208964026997673,1.831225105994891,intramolecular,Activated
+H,O,3,4,3,4,0.8738,0.7459,-0.1279,0.975358861573524,0.9789824263581047,intramolecular,Activated
+O,Mo,4,5,4,5,1.0086,1.0639,0.05530000000000013,1.904247521128753,1.8777559526011363,intramolecular,Strengthened
+H,Ni,-1,-1,0,12,,0.4552,,,1.6311092098544473,adsorbate-surface,New
+H,Ni,-1,-1,1,17,,0.4995,,,1.6488827921553422,adsorbate-surface,New
+H,Ni,-1,-1,2,11,,0.4983,,,1.6549398756199563,adsorbate-surface,New
+Mo,Ni,-1,-1,5,11,,0.2026,,,2.7203277474695944,adsorbate-surface,New
+Mo,Ni,-1,-1,5,12,,0.3102,,,2.513811537351795,adsorbate-surface,New
+Mo,Ni,-1,-1,5,15,,0.0512,,,3.414487169452244,adsorbate-surface,New
+Mo,Ni,-1,-1,5,16,,0.8681,,,2.171603066137778,adsorbate-surface,New
+Mo,Ni,-1,-1,5,17,,0.2397,,,2.656937040881097,adsorbate-surface,New
+Mo,Ni,-1,-1,5,21,,0.0631,,,3.334640455387807,adsorbate-surface,New

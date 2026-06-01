@@ -1,0 +1,79 @@
+    6
+jmolscript: load "" {1 1 1} spacegroup "x,y,z" unitcell [{     15.000000     0.000000     0.000000 }, {      0.000000    15.000000     0.000000 }, {      0.000000     0.000000    15.000000 }]
+H       7.448535      5.587290      7.145295       0.905074
+H       8.906040      7.201125      5.653725       0.865635
+H       6.020880      7.270560      5.709675       0.864482
+H       7.549575      8.137560      8.973060       0.900664
+O       7.537740      8.462640      8.053545       1.913772
+Mo      7.480980      7.212075      6.618615       3.537417
+    
+ Chargemol version 3.5 September 26, 2017.
+ See ddec.sourceforge.net for latest version.
+    
+    
+ The sum of bond orders (SBO) for each atom in the unit cell are listed above.
+ All bond orders greater than     0.001000 are printed below.
+  
+  
+ ===================================================================================
+ Printing BOs for ATOM #      1 ( H  ) in the reference unit cell.
+  
+ Bonded to the (  0,   0,   0) translated image of atom number     2 ( H  ) with bond order =     0.0196    The average spin polarization of this bonding =     0.0861
+ Bonded to the (  0,   0,   0) translated image of atom number     3 ( H  ) with bond order =     0.0198    The average spin polarization of this bonding =     0.0860
+ Bonded to the (  0,   0,   0) translated image of atom number     4 ( H  ) with bond order =     0.0028    The average spin polarization of this bonding =     0.0613
+ Bonded to the (  0,   0,   0) translated image of atom number     5 ( O  ) with bond order =     0.0106    The average spin polarization of this bonding =     0.0869
+ Bonded to the (  0,   0,   0) translated image of atom number     6 ( Mo ) with bond order =     0.8523    The average spin polarization of this bonding =     0.1048
+ The sum of bond orders for this atom is SBO =        0.905074
+  
+  
+ ===================================================================================
+ Printing BOs for ATOM #      2 ( H  ) in the reference unit cell.
+  
+ Bonded to the (  0,   0,   0) translated image of atom number     1 ( H  ) with bond order =     0.0196    The average spin polarization of this bonding =     0.0861
+ Bonded to the (  0,   0,   0) translated image of atom number     3 ( H  ) with bond order =     0.0083    The average spin polarization of this bonding =     0.0869
+ Bonded to the (  0,   0,   0) translated image of atom number     5 ( O  ) with bond order =     0.0103    The average spin polarization of this bonding =     0.0816
+ Bonded to the (  0,   0,   0) translated image of atom number     6 ( Mo ) with bond order =     0.8272    The average spin polarization of this bonding =     0.1006
+ The sum of bond orders for this atom is SBO =        0.865635
+  
+  
+ ===================================================================================
+ Printing BOs for ATOM #      3 ( H  ) in the reference unit cell.
+  
+ Bonded to the (  0,   0,   0) translated image of atom number     1 ( H  ) with bond order =     0.0198    The average spin polarization of this bonding =     0.0860
+ Bonded to the (  0,   0,   0) translated image of atom number     2 ( H  ) with bond order =     0.0083    The average spin polarization of this bonding =     0.0869
+ Bonded to the (  0,   0,   0) translated image of atom number     5 ( O  ) with bond order =     0.0104    The average spin polarization of this bonding =     0.0816
+ Bonded to the (  0,   0,   0) translated image of atom number     6 ( Mo ) with bond order =     0.8258    The average spin polarization of this bonding =     0.1006
+ The sum of bond orders for this atom is SBO =        0.864482
+  
+  
+ ===================================================================================
+ Printing BOs for ATOM #      4 ( H  ) in the reference unit cell.
+  
+ Bonded to the (  0,   0,   0) translated image of atom number     1 ( H  ) with bond order =     0.0028    The average spin polarization of this bonding =     0.0613
+ Bonded to the (  0,   0,   0) translated image of atom number     5 ( O  ) with bond order =     0.8738    The average spin polarization of this bonding =     0.0138
+ Bonded to the (  0,   0,   0) translated image of atom number     6 ( Mo ) with bond order =     0.0236    The average spin polarization of this bonding =     0.0697
+ The sum of bond orders for this atom is SBO =        0.900664
+  
+  
+ ===================================================================================
+ Printing BOs for ATOM #      5 ( O  ) in the reference unit cell.
+  
+ Bonded to the (  0,   0,   0) translated image of atom number     1 ( H  ) with bond order =     0.0106    The average spin polarization of this bonding =     0.0869
+ Bonded to the (  0,   0,   0) translated image of atom number     2 ( H  ) with bond order =     0.0103    The average spin polarization of this bonding =     0.0816
+ Bonded to the (  0,   0,   0) translated image of atom number     3 ( H  ) with bond order =     0.0104    The average spin polarization of this bonding =     0.0816
+ Bonded to the (  0,   0,   0) translated image of atom number     4 ( H  ) with bond order =     0.8738    The average spin polarization of this bonding =     0.0138
+ Bonded to the (  0,   0,   0) translated image of atom number     6 ( Mo ) with bond order =     1.0086    The average spin polarization of this bonding =     0.0918
+ The sum of bond orders for this atom is SBO =        1.913772
+  
+  
+ ===================================================================================
+ Printing BOs for ATOM #      6 ( Mo ) in the reference unit cell.
+  
+ Bonded to the (  0,   0,   0) translated image of atom number     1 ( H  ) with bond order =     0.8523    The average spin polarization of this bonding =     0.1048
+ Bonded to the (  0,   0,   0) translated image of atom number     2 ( H  ) with bond order =     0.8272    The average spin polarization of this bonding =     0.1006
+ Bonded to the (  0,   0,   0) translated image of atom number     3 ( H  ) with bond order =     0.8258    The average spin polarization of this bonding =     0.1006
+ Bonded to the (  0,   0,   0) translated image of atom number     4 ( H  ) with bond order =     0.0236    The average spin polarization of this bonding =     0.0697
+ Bonded to the (  0,   0,   0) translated image of atom number     5 ( O  ) with bond order =     1.0086    The average spin polarization of this bonding =     0.0918
+ The sum of bond orders for this atom is SBO =        3.537417
+    
+ 2025/11/22  13:19:11
