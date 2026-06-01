@@ -15,14 +15,16 @@ bonds appear on the surface. The bonds must be put into correspondence first.
 First map the gas-phase molecule onto the adsorbed system (which adsorbed atom is
 which gas atom), then compare bond orders through that map.
 
-**Atom map (gas → adsorbed), a two-stage Hungarian assignment:**
+**Atom map (gas → adsorbed).** The gas molecule is superposed onto the adsorbed
+molecule by an iterative **Kabsch rotation + per-element Hungarian** assignment
+that minimizes RMSD:
 
-1. **Heavy atoms** are anchored on the unique heavy element (Mo): translate the
-   gas molecule onto the topmost adsorbed Mo, then assign heavy atoms by
-   minimum distance.
-2. **Hydrogens** are assigned by distance plus a chemical-ancestry penalty — a
-   gas O–H hydrogen is discouraged from mapping onto an adsorbed Mo–H hydride
-   unless the geometry strongly demands it.
+1. anchor on the unique heavy element (Mo) for an initial translation;
+2. assign atoms per element by nearest distance — heavy atoms directly,
+   hydrogens with a chemical-ancestry penalty (a gas O–H hydrogen is discouraged
+   from mapping onto an adsorbed Mo–H hydride unless the geometry demands it);
+3. refit the rotation from the current correspondence and repeat until it
+   converges, keeping the best-RMSD mapping.
 
 **Bond comparison.** Each gas-phase bond is located on the surface through the
 map and its DDEC6 bond order recorded, giving

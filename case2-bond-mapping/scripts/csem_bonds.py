@@ -22,10 +22,10 @@ COV_TOL = 1.3
 
 # Activation thresholds on the DDEC6 bond order (BO), gas -> adsorbed.
 THRESHOLDS = {
-    "new_bo_gas_max": 0.05,        # gas BO below this + real ads BO -> New
-    "dissociated_bo_ads_max": 0.10,  # former bond with ads BO below this -> Dissociated
-    "activated_delta_bo": -0.05,   # delta_bo <= this -> Activated
-    "strengthened_delta_bo": 0.05,  # delta_bo >= this -> Strengthened
+    "new_bo_gas_max": 0.05,
+    "dissociated_bo_ads_max": 0.10,
+    "activated_delta_bo": -0.05,
+    "strengthened_delta_bo": 0.05,
 }
 
 
@@ -53,7 +53,7 @@ def read_bond_orders(path: Path) -> DDEC6:
     for ln in lines:
         if "Printing BOs for ATOM #" in ln:
             m = re.search(r"ATOM #\s+(\d+)", ln)
-            current = int(m.group(1)) - 1 if m else current   # to 0-based
+            current = int(m.group(1)) - 1 if m else current
         elif "Bonded to the" in ln and current is not None:
             t = re.search(r"\(\s*([\-\d]+),\s*([\-\d]+),\s*([\-\d]+)\)", ln)
             a2 = re.search(r"atom number\s+(\d+)", ln)
@@ -76,49 +76,90 @@ def _neighbors(d: DDEC6, i: int) -> List[int]:
     return out
 
 
-def map_gas_to_adsorbed(gas: DDEC6, ads: DDEC6, h_penalty: float = 2.0) -> Dict[int, int]:
-    """Hungarian atom map {gas_idx -> ads_idx} (0-based).
+def _kabsch_rotation(P: np.ndarray, Q: np.ndarray) -> np.ndarray:
+    """Proper rotation R with (P - mean P) @ R.T best matching (Q - mean Q)."""
+    H = (P - P.mean(0)).T @ (Q - Q.mean(0))
+    U, _, Vt = np.linalg.svd(H)
+    d = np.sign(np.linalg.det(Vt.T @ U.T)) or 1.0
+    return Vt.T @ np.diag([1.0, 1.0, d]) @ U.T
 
-    Heavy atoms are matched on distance after anchoring on a unique heavy
-    element; hydrogens are matched on distance plus a penalty when their bonded
-    heavy neighbor does not correspond to the gas hydrogen's heavy neighbor.
+
+def map_gas_to_adsorbed(gas: DDEC6, ads: DDEC6, h_penalty: float = 2.0,
+                        max_iter: int = 30) -> Dict[int, int]:
+    """Rigid (rotation + translation) atom map {gas_idx -> ads_idx}, 0-based.
+
+    The gas molecule is superposed onto the adsorbed molecule by an iterative
+    Kabsch (rotation) + per-element Hungarian loop, minimizing RMSD:
+
+    1. anchor on the unique heavy element (Mo) for an initial translation;
+    2. assign atoms per element by minimum distance (heavy atoms by distance;
+       hydrogens by distance plus a chemical-ancestry penalty that discourages,
+       e.g., an O-H hydrogen from mapping onto a metal-H hydride);
+    3. refit the rotation from the current correspondence and repeat.
+
+    Only adsorbed atoms whose element also occurs in the gas phase (i.e. the
+    adsorbate, not the metal surface) are candidates. The best-RMSD mapping
+    encountered is returned.
     """
     common = set(gas.elements) & set(ads.elements)
     heavies = [e for e in common if e != "H"]
     unique = [e for e in heavies if gas.elements.count(e) == 1]
     anchor = unique[0] if unique else None
+    ads_mol = [i for i, e in enumerate(ads.elements) if e in common]
 
-    trans = np.zeros(3)
+    # Initial transform: translate so the anchor heavy atoms coincide.
+    R = np.eye(3)
     if anchor:
-        gi = gas.indices_of(anchor)[0]
-        ai = max(ads.indices_of(anchor), key=lambda k: ads.coords[k][2])
-        trans = ads.coords[ai] - gas.coords[gi]
-    gas_shift = gas.coords + trans
+        g0 = gas.indices_of(anchor)[0]
+        anchors = [a for a in ads.indices_of(anchor) if a in ads_mol] or ads.indices_of(anchor)
+        a0 = max(anchors, key=lambda k: ads.coords[k][2])  # topmost = adsorbate
+        gas_com, ads_com = gas.coords[g0], ads.coords[a0]
+    else:
+        gas_com = gas.coords.mean(0)
+        ads_com = ads.coords[ads_mol].mean(0)
 
-    mapping: Dict[int, int] = {}
-    for e in heavies:
-        gl, al = gas.indices_of(e), ads.indices_of(e)
-        if not gl or not al:
-            continue
-        cost = np.array([[np.linalg.norm(gas_shift[g] - ads.coords[a]) for a in al] for g in gl])
-        r, c = linear_sum_assignment(cost)
-        for ri, ci in zip(r, c):
-            mapping[gl[ri]] = al[ci]
+    def assign(R, gas_com, ads_com) -> Dict[int, int]:
+        T = (gas.coords - gas_com) @ R.T + ads_com   # gas atoms in the ads frame
+        mapping: Dict[int, int] = {}
+        for e in heavies:
+            gl = gas.indices_of(e)
+            al = [a for a in ads.indices_of(e) if a in ads_mol]
+            cost = np.array([[np.linalg.norm(T[g] - ads.coords[a]) for a in al] for g in gl])
+            r, c = linear_sum_assignment(cost)
+            for ri, ci in zip(r, c):
+                mapping[gl[ri]] = al[ci]
+        gh = gas.indices_of("H")
+        ah = [a for a in ads.indices_of("H") if a in ads_mol]
+        if gh and ah:
+            cost = np.zeros((len(gh), len(ah)))
+            for i, g in enumerate(gh):
+                ng = [mapping[k] for k in _neighbors(gas, g) if k in mapping]
+                for j, a in enumerate(ah):
+                    dist = float(np.linalg.norm(T[g] - ads.coords[a]))
+                    na = _neighbors(ads, a)
+                    pen = 0.0 if (any(m in na for m in ng) or not ng) else h_penalty
+                    cost[i, j] = dist + pen
+            r, c = linear_sum_assignment(cost)
+            for ri, ci in zip(r, c):
+                mapping[gh[ri]] = ah[ci]
+        return mapping
 
-    gh, ah = gas.indices_of("H"), ads.indices_of("H")
-    if gh and ah:
-        cost = np.zeros((len(gh), len(ah)))
-        for i, g in enumerate(gh):
-            ng = [mapping[k] for k in _neighbors(gas, g) if k in mapping]
-            for j, a in enumerate(ah):
-                dist = float(np.linalg.norm(gas_shift[g] - ads.coords[a]))
-                na = _neighbors(ads, a)
-                pen = 0.0 if (any(m in na for m in ng) or not ng) else h_penalty
-                cost[i, j] = dist + pen
-        r, c = linear_sum_assignment(cost)
-        for ri, ci in zip(r, c):
-            mapping[gh[ri]] = ah[ci]
-    return mapping
+    mapping = assign(R, gas_com, ads_com)
+    best = (np.inf, mapping)
+    for _ in range(max_iter):
+        gl = sorted(mapping)
+        P = gas.coords[gl]
+        Q = ads.coords[[mapping[g] for g in gl]]
+        gas_com, ads_com = P.mean(0), Q.mean(0)
+        R = _kabsch_rotation(P, Q)
+        rmsd = float(np.sqrt(np.mean(((P - gas_com) @ R.T + ads_com - Q) ** 2)))
+        new = assign(R, gas_com, ads_com)
+        if rmsd < best[0]:
+            best = (rmsd, new)
+        if new == mapping:
+            break
+        mapping = new
+    return best[1]
 
 
 def _index_intra_bonds(d: DDEC6, min_bo: float) -> Dict[Tuple[int, int], float]:

@@ -3,10 +3,11 @@
 Step 1 - Map the gas-phase molecule onto each adsorbed system.
 
 To compare a bond across systems we must know which adsorbed atom is which
-gas-phase atom. This step solves that atom correspondence for gas -> Cu and
-gas -> Ni with a Hungarian assignment (heavy atoms by distance after anchoring
-on Mo; hydrogens by distance plus a chemical-ancestry penalty), reading the
-geometries straight from the DDEC6 bond-order files.
+gas-phase atom. This step solves that atom correspondence for gas -> Cu and gas -> Ni with an
+iterative Kabsch rotation + per-element Hungarian assignment that minimizes RMSD
+(anchor on Mo; heavy atoms by distance; hydrogens by distance plus a
+chemical-ancestry penalty), reading the geometries straight from the DDEC6
+bond-order files.
 
 Input : data/gas/bond_orders.xyz, data/<S>/bond_orders.xyz   (S = Cu, Ni)
 Output: results/atom_map_<S>.json   ({gas_index: ads_index}, 0-based)
