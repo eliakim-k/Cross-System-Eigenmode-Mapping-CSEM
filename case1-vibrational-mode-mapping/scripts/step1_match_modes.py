@@ -15,6 +15,10 @@ system's mode vectors, and the overlap matrix S[i, j] = |v_i(ref) . v_j(mov)| is
 formed. A greedy one-to-one pass pairs each reference mode with a distinct moved
 mode in descending overlap.
 
+The mode vectors are the adsorbate-projected displacement eigenvectors read from
+the VASP OUTCAR of the finite-displacement run; they are L2-normalized again here
+so the overlap is a cosine regardless of how the inputs are scaled.
+
 Inputs  : data/POSCAR_<ref>, data/POSCAR_<mov>            (geometry; adsorbate first)
           data/eigenvectors_<ref>.csv, _<mov>.csv         (per-mode displacements)
 Outputs : results/matches.csv          (one row per matched mode pair)

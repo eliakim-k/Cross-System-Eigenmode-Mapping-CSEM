@@ -12,13 +12,17 @@ order is not enough: modes reorder and mix from one surface to the other, so the
 
 ## The approach
 
-A mode is a unit displacement vector over the adsorbate atoms. Two modes are "the
+A mode is a displacement vector over the adsorbate atoms. Two modes are "the
 same motion" to the extent their vectors are parallel, measured by the absolute
 cosine overlap:
 
 ```
 S_ij = | v_i(Cu) · v_j(Ni) |        in [0, 1]
 ```
+
+This dot product is a cosine only if each eigenvector is unit length, so every
+mode is **L2-normalized to one before the overlap is formed** (`step1` enforces
+this, regardless of the scaling of the input vectors).
 
 For this dot product to be meaningful the two adsorbates must share one atom
 order and one Cartesian frame, so the moved system (Ni) is first rigidly aligned
@@ -35,10 +39,15 @@ Cu mode with a distinct Ni mode in descending overlap. The pairing is read off
 
 ## Application: H3MoOH on Cu(111) and Ni(111)
 
-The adsorbate is H3MoOH (6 atoms: Mo, O, 4 H). Frequencies and eigenvectors are
-from periodic plane-wave DFT (**VASP**); `data/` ships the adsorbate-projected,
-unit-normalized displacement vectors extracted from the VASP runs (the large
-OUTCARs are not needed). Ten modes are compared on each surface.
+The adsorbate is H3MoOH (6 atoms: Mo, O, 4 H). The vibrational analysis is a
+finite-displacement run in periodic plane-wave DFT (**VASP**, `IBRION = 5`), and
+the displacement eigenvectors are read from the resulting `OUTCAR`. To keep the
+repository light, `data/` ships only the post-processed inputs: for each surface
+the eigenvectors are projected onto the six adsorbate atoms and L2-normalized,
+then written as `eigenvectors_<surface>.csv` — so the multi-megabyte `OUTCAR`
+files are not needed to reproduce the mapping. Ten modes are compared on each
+surface. See [`data/README.md`](data/README.md) for the exact column layout and
+provenance.
 
 <p align="center">
   <img src="results/overlap_heatmap.png" width="560" alt="Eigenmode overlap heatmap, Cu vs Ni">
